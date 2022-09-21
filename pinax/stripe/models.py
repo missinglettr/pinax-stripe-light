@@ -276,6 +276,7 @@ class Customer(AccountRelatedStripeObject):
         return stripe.Customer.retrieve(
             self.stripe_id,
             stripe_account=self.stripe_account_stripe_id,
+            expand=["sources"],
         )
 
     def __str__(self):
