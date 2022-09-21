@@ -221,7 +221,7 @@ def sync_customer(customer, cu=None):
         purge_local(customer)
         return
 
-    customer.account_balance = utils.convert_amount_for_db(cu["account_balance"], cu["currency"])
+    customer.account_balance = utils.convert_amount_for_db(cu["balance"], cu["currency"])
     customer.currency = cu["currency"] or ""
     customer.delinquent = cu["delinquent"]
     customer.default_source = cu["default_source"] or ""
