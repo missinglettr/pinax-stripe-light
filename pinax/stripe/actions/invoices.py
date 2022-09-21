@@ -77,7 +77,7 @@ def sync_invoice_from_stripe_data(stripe_invoice, send_receipt=settings.PINAX_ST
     c = models.Customer.objects.get(stripe_id=stripe_invoice["customer"])
     period_end = utils.convert_tstamp(stripe_invoice, "period_end")
     period_start = utils.convert_tstamp(stripe_invoice, "period_start")
-    date = utils.convert_tstamp(stripe_invoice, "date")
+    date = utils.convert_tstamp(stripe_invoice, "created")
     sub_id = stripe_invoice.get("subscription")
     stripe_account_id = c.stripe_account_stripe_id
 
