@@ -160,7 +160,7 @@ def sync_invoice_items(invoice, items):
             plan = None
 
         if item["type"] == "subscription":
-            if invoice.subscription and invoice.subscription.stripe_id == item["id"]:
+            if invoice.subscription and invoice.subscription.stripe_id == item["subscription"]:
                 item_subscription = invoice.subscription
             else:
                 stripe_subscription = subscriptions.retrieve(
