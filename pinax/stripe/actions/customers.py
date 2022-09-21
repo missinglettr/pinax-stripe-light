@@ -30,7 +30,7 @@ def _create_without_account(user, card=None, plan=settings.PINAX_STRIPE_DEFAULT_
     cus = models.Customer.objects.filter(user=user).first()
     if cus is not None:
         try:
-            stripe.Customer.retrieve(cus.stripe_id)
+            stripe.Customer.retrieve(cus.stripe_id, expand=["sources"])
             return cus
         except stripe.error.InvalidRequestError:
             pass
@@ -226,7 +226,9 @@ def sync_customer(customer, cu=None):
     customer.delinquent = cu["delinquent"]
     customer.default_source = cu["default_source"] or ""
     customer.save()
-    for source in cu["sources"]["data"]:
-        sources.sync_payment_source_from_stripe_data(customer, source)
-    for subscription in cu["subscriptions"]["data"]:
-        subscriptions.sync_subscription_from_stripe_data(customer, subscription)
+    if cu.get("sources"):
+        for source in cu["sources"]["data"]:
+            sources.sync_payment_source_from_stripe_data(customer, source)
+    if cu.get("subscriptions"):
+        for subscription in cu["subscriptions"]["data"]:
+            subscriptions.sync_subscription_from_stripe_data(customer, subscription)
